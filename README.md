@@ -68,7 +68,7 @@ done
 bcftools +fixref chr<n>.vcf -- -f $genome # check for REF/ALT flip
 snpflip --fasta-genome=$genome --bim-file=chr<n> -o chr<n> # correct the swap if needed
 ```
-In the next step, we provided an R-script `interpolate.R` to interpolate the recombination rates (in cM) from known genetic distances between HapMap variants. This is required as during the conversion of plink binaries from VCF the genetic distance (cM) information in the *.map* file is lost. We used known recombination rates for the 1000G **South Asian (SAS)** populations available at [Pyrho recombination map](https://github.com/popgenmethods/pyrho?tab=readme-ov-file#human-recombination-maps) repository. Run `R --vanilla > interpolate.R` command to interpolate the genetic distances between the variants from VCF files to tab-separated text files. The first column of the output file is chromosome name, second column is the position of the variant in bp and the third column is the recombination rate in cM which look like this:
+In the next step, we provided an R-script `interpolate.R` to interpolate the recombination rates (in cM) from known genetic distances between HapMap variants. This is required as during the conversion of plink binaries from VCF the genetic distance (cM) information in the *.map* file is lost. We used known recombination rates for the 1000G **South Asian (SAS)** populations available at [Pyrho recombination map](https://github.com/popgenmethods/pyrho?tab=readme-ov-file#human-recombination-maps) repository. Run `R --vanilla > interpolate.R` command to interpolate the genetic distances between the variants from VCF files to tab-separated text files. The first column of the output file is chromosome name, second column is the position of the variant in bp and the third column is the recombination rate in cM which looks like this:
 ```
 chr1	16103	0.000522530060230873
 chr1	51479	0.00167045426135659
@@ -79,7 +79,16 @@ chr1	54490	0.00176815891336896
 chr1	54669	0.0017739673267566
 chr1	54708	0.0017752328469919
 ```
-
+This will produce `.tab.gz` files for each chromosome which will be used as input in **LDetect**. 
+In the final step run the `block_partition.sh` file to execute LDetect. This step is complicated as it needs five substeps to complete by executing five Python-written files. See [LDetect page](https://bitbucket.org/nygcresearch/ldetect/src/master/) for more information. As you install the LDetect package, it automatically downloads these python files. LDetect expects directories to be arranged in a specific manner, so we have incorporated the layout in the `block_partition.sh` script. Overall, the output of each substep will be dumped into specific sub-directories as LDetect requires. The final output i.e. LD locks for each chromosome will be written in `bed` files in the respective `chr<n>` directories. The **BED** files will look this: 
+```
+CHROM	start		end
+chr22	17057138	18479447
+chr22	18486017	22150982
+chr22	22175985	23282877
+chr22	23283219	25079925
+chr22	25081241	26789849
+```
 
 
 
