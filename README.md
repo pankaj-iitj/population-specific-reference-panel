@@ -53,11 +53,22 @@ After all the trimmed reads are deposited in the `trimmed_reads` directory, run 
 
 **Note:** We parallelized this process with the GNU `parallel` command taking 10 concurrent jobs and adjusted the number of threads as per our in-house server. Users are advised to calculate these parameters according to the memory allocation their system permits. 
 
-The joint calling will yield multi-sample VCF files split over chromosomes. During the `GenotypeGVCFs` execution, we only included 22 autosomes while sex-chromosomes and mDNA were excluded. ***This step is computationally intensive and may take several days depending on file sizes and number of samples***. 
+The joint calling will yield multi-sample VCF files in `vcf/` directory split over chromosomes. During the `GenotypeGVCFs` execution, we only included 22 autosomes while sex-chromosomes and mDNA were excluded. ***This step is computationally intensive and may take several days depending on file sizes and number of samples***. 
 
 ### LD-block partitioning: 
-
-
+The first step here is to convert the genotyped VCF files into PLINK binary (bed,bim,fam) files. The pipeline expects PLINK files to be sub-directories specified by each chromosome inside the `ld_blk/` directory. To do this run the command below
+```
+for n in {1..22}; do 
+  mkdir -p ld_blk/chr$n 
+  plink2 --vcf vcf/chr$n.vcf --double-id --export ped --make-bed --out ld_blk/chr$n/chr$n 
+done
+```
+***Caution:*** It is quite common that during file conversion to plink binaries, allele swap happens. PLINK2 treats **minor allele as A1 and major allele as A2**. The current release of PLINK2 does not affect on `--keep-allele-order` flag as it handles A1/A2 alleles separately from **'reference allele'**. If you are still using PLINK1.9, use ``plink --keep-allele-order`` option to prevent allele swap. To check whether there had been allele swap or strand flipping we recommend using the commands beforehand:
+```
+bcftools +fixref chr<n>.vcf -- -f $genome # check for REF/ALT flip
+snpflip --fasta-genome=$genome --bim-file=chr<n> --o chr<n> # correct the swap if needed
+```
+The next 
 
 
 
