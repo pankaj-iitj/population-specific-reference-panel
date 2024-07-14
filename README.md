@@ -66,9 +66,21 @@ done
 ***Caution:*** It is quite common that during file conversion to plink binaries, allele swap happens. PLINK2 treats **minor allele as A1 and major allele as A2**. The current release of PLINK2 does not affect on `--keep-allele-order` flag as it handles A1/A2 alleles separately from **'reference allele'**. If you are still using PLINK1.9, use ``plink --keep-allele-order`` option to prevent allele swap. To check whether there had been allele swap or strand flipping we recommend using the commands beforehand:
 ```
 bcftools +fixref chr<n>.vcf -- -f $genome # check for REF/ALT flip
-snpflip --fasta-genome=$genome --bim-file=chr<n> --o chr<n> # correct the swap if needed
+snpflip --fasta-genome=$genome --bim-file=chr<n> -o chr<n> # correct the swap if needed
 ```
-The next 
+In the next step, we provided an R-script `interpolate.R` to interpolate the recombination rates (in cM) from known genetic distances between HapMap variants. This is required as during the conversion of plink binaries from VCF the genetic distance (cM) information in the *.map* file is lost. We used known recombination rates for the 1000G **South Asian (SAS)** populations available at [Pyrho recombination map](https://github.com/popgenmethods/pyrho?tab=readme-ov-file#human-recombination-maps) repository. Run `R --vanilla > interpolate.R` command to interpolate the genetic distances between the variants from VCF files to tab-separated text files. The first column of the output file is chromosome name, second column is the position of the variant in bp and the third column is the recombination rate in cM which look like this:
+```
+chr1	16103	0.000522530060230873
+chr1	51479	0.00167045426135659
+chr1	51898	0.00168405049157684
+chr1	51928	0.00168502396868092
+chr1	51954	0.00168586764883778
+chr1	54490	0.00176815891336896
+chr1	54669	0.0017739673267566
+chr1	54708	0.0017752328469919
+```
+
+
 
 
 
