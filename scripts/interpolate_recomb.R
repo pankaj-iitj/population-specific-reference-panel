@@ -17,7 +17,7 @@ getPos <- function(chr){
 }
 
 
-## If  
+## If 'pyrho_recomb/' folder is not there then throw error and tell to download and unzip first 
 decodeGr <- function(pop, chr, chrgr, try.a.sub = FALSE){
     if(!file.exists("pyrho_recomb/hg38/ACB"))
         stop(paste("You must first download the hg38 pyrho recombination maps here:\nhttps://drive.google.com/drive/folders/1Tgt_7GsDO0-o02vcYSfwqHFd3JNF6R06",
@@ -32,6 +32,11 @@ decodeGr <- function(pop, chr, chrgr, try.a.sub = FALSE){
     gr
 }
 
+
+# Function for interpolation assuming linearity between distance and recombination rate
+# First step is to convert cM/Mb in pyrho files to cM/bp
+# Then interpolate the unknown rate from known rates in cM/bp
+# And convert cM/bp back to cM by multiplying with bp
 
 
 interpThat <- function(inds, snpgr, decodeblocks) {
