@@ -80,14 +80,11 @@ wget https://zenodo.org/records/11437540/files/hg19_maps.tar.gz # hg19 build
 
 Run `R --vanilla > interpolate.R` command to interpolate the genetic distances between the variants from VCF files to tab-separated text files. The first column of the output file is chromosome name, second column is the position of the variant in bp and the third column is the recombination rate in cM which looks like this:
 ```
-chr1	16103	0.000522530060230873
-chr1	51479	0.00167045426135659
-chr1	51898	0.00168405049157684
-chr1	51928	0.00168502396868092
-chr1	51954	0.00168586764883778
-chr1	54490	0.00176815891336896
-chr1	54669	0.0017739673267566
-chr1	54708	0.0017752328469919
+chr1	817186	0.00923521100938176
+chr1	817341	0.00956903976555111
+chr1	833068	1.93947091863448
+chr1	841166	1.94334976267245
+chr1	863579	1.96432080949882
 ```
 **Note:** This script is based on 1000G SAS subpopulations i.e. **BEB**, **GIH**, **PJL**, **ITU** and **STU**. If you have different population to work with, change the last code of the script accordingly, like, 
 ```
