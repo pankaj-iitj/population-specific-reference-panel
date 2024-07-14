@@ -16,3 +16,22 @@ The tools included in this pipeline are listed sequentially. Make sure these too
 | [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) | Quality control of paired-end `fastq' files |
 | [MultiQC](https://multiqc.info/) | Aggregated quality report |
 | [fastp](https://github.com/OpenGene/fastp) | Read trimming in batch |
+| [BWA](https://bio-bwa.sourceforge.net/) | Read mapping to reference genome |
+| [Samtools](https://www.htslib.org/) | Sorting and indexing alignment files |
+| [GATK v4.6.0](https://gatk.broadinstitute.org/hc/en-us) | Toolkit for various functions e.g. mark duplicates, base recalibration, variant calling |
+| [PLINK v2.0](https://www.cog-genomics.org/plink/2.0/) | Genotype file conversion, LD calculation |
+| [bcftools](https://samtools.github.io/bcftools/howtos/index.html) | VCF file manipulation |      
+| [snpflip](https://github.com/biocore-ntnu/snpflip) | Correcting strand flipping and allele swap |
+| [LDetect](https://bitbucket.org/nygcresearch/ldetect/src/master/) | LD Block partitioning | 
+
+## Set the working directory
+We assume per sample paired-end reads i.e. `*R1.fastq` and `*R2.fastq` are in the `reads/` directory. The required human genome reference (GRCh37/38) in FASTA and dnSNP [build 156](https://ftp.ncbi.nih.gov/snp/archive/b156/VCF/) known sites in VCF should be placed in the `reference/` directory. We provided the `   
+
+
+
+
+
+
+
+
+
