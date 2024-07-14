@@ -63,6 +63,8 @@ for n in {1..22}; do
   plink2 --vcf vcf/chr$n.vcf --double-id --export ped --make-bed --out plink_binary/chr$n/chr$n 
 done
 ```
+You can also run `bash plink_bn.sh` command for the same. 
+
 ***Caution:*** It is quite common that during file conversion to plink binaries, allele swap happens. PLINK2 treats **minor allele as A1 and major allele as A2**. The current release of PLINK2 does not affect on `--keep-allele-order` flag as it handles A1/A2 alleles separately from **'reference allele'**. If you are still using PLINK1.9, use ``plink --keep-allele-order`` option to prevent allele swap. To check whether there had been allele swap or strand flipping we recommend using the commands beforehand:
 ```
 bcftools +fixref chr<n>.vcf -- -f $genome # check for REF/ALT flip
