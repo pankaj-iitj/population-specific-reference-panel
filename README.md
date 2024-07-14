@@ -49,8 +49,13 @@ cat samples.txt | parallel --progress --eta -j 10 "fastp -i reads/{}_R1.fastq.gz
 The quality reports will be dumped in the `quality` directory. 
 
 ### Joint calling:
-After all the trimmed reads are deposited in the `trimmed_reads` directory, run `bash joint_calling.sh` command to execute joint calling step over multiple samples. The script takes trimmed reads from each sample and then aligns them with the reference genome, marks duplicate reads, and recalibrates base calls and calls variants per sample before finally perform joint calling over all samples. 
-**Note:** We parallelized this process with the GNU `parallel` command taking 10 concurrent jobs and adjusted the number of threads as per our in-house server. Users are advised to calculate these parameters according to memory allocation their system permits.   
+After all the trimmed reads are deposited in the `trimmed_reads` directory, run `bash joint_calling.sh` command to execute joint calling step over multiple samples. The script takes trimmed reads from each sample and then aligns them with the reference genome, marks duplicate reads, and recalibrates base calls and calls variants per sample before finally perform joint calling over all samples. These include the commands: `bwa mem`, `samtools view`, `samtools sort`, `samtools index`, `gatk4 MarkDuplicatesSpark`, `gatk4 BaseRecalibrator`, `gatk4 ApplyBQSR`, `gatk4 HaplotypeCaller`, `gatk4 GenomicsDBImport` and `gatk4 GenotypeGVCFs` one after another. 
+
+**Note:** We parallelized this process with the GNU `parallel` command taking 10 concurrent jobs and adjusted the number of threads as per our in-house server. Users are advised to calculate these parameters according to the memory allocation their system permits. 
+
+The joint calling will yield multi-sample VCF files split over chromosomes. During the `GenotypeGVCFs` execution, we only included 22 autosomes while sex-chromosomes and mDNA were excluded. ***This step is computationally intensive and may take several days depending on file sizes and number of samples***. 
+
+### LD-block partitioning: 
 
 
 
