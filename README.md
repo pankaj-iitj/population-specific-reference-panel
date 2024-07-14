@@ -89,6 +89,13 @@ chr1	54490	0.00176815891336896
 chr1	54669	0.0017739673267566
 chr1	54708	0.0017752328469919
 ```
+**Note:** This script is based on 1000G SAS subpopulations i.e. **BEB**, **GIH**, **PJL**, **ITU** and **STU**. If you have different population to work with, change the last code of the script accordingly, like, 
+```
+for(i in paste0("chr", 1:22))
+    for(j in c("BEB","PJL","GIH","STU","ITU")) # change this line as, "for(j in c("<your_pop_code>"))"
+        runIt(i,j)
+```
+
 This will produce `.tab.gz` files for each chromosome which will be used as input in **LDetect**. 
 In the final step run the `block_partition.sh` file to execute LDetect. This step is complicated as it needs five substeps to complete by executing five Python-written files. See [LDetect page](https://bitbucket.org/nygcresearch/ldetect/src/master/) for more information. As you install the LDetect package, it automatically downloads these python files. LDetect expects directories to be arranged in a specific manner, so we have incorporated the layout in the `block_partition.sh` script. Overall, the output of each substep will be dumped into specific sub-directories as LDetect requires. The final output i.e. LD blocks for each chromosome will be written in `bed` files in the respective `chr<n>/` directories. The **BED** files will look this: 
 ```
