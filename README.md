@@ -72,13 +72,13 @@ snpflip --fasta-genome=$genome --bim-file=chr<n> -o chr<n> # correct the swap if
 ```
 Following this step, run `bash geno_qc.sh` command to execute a quality control of the genotyped data. We used standard thresholds for QC step i.e. to filter out varianta with Sample missing rate > 1% `--mind 0.01`, SNP missing rate > 1% `--geno 0.01`, minor allele frequency `--maf 0.01`, Hardy-Weinberg Equilibrium < 10<sup>-6</sup> `--hwe 10e-6` and heterozygosity exceeding +3SD. The clean variants for each chromosome will be put in the `geno_qc` directory under the corresponding chromosomes.    
 
-In the next step, we provided an R-script `interpolate.R` to interpolate the recombination rates (in cM) from known genetic distances between HapMap variants. This is required as during the conversion of plink binaries from VCF the genetic distance (cM) information in the *.map* file is lost. We used known recombination rates for the 1000G **South Asian (SAS)** populations available at [Pyrho recombination map](https://github.com/popgenmethods/pyrho?tab=readme-ov-file#human-recombination-maps) repository. Download the recombination map files beforehand
+In the next step, we provided an R-script `interpolate_recomb.R` to interpolate the recombination rates (in cM) from known genetic distances between HapMap variants. This is required as during the conversion of plink binaries from VCF the genetic distance (cM) information in the *.map* file is lost. We used known recombination rates for the 1000G **South Asian (SAS)** populations available at [Pyrho recombination map](https://github.com/popgenmethods/pyrho?tab=readme-ov-file#human-recombination-maps) repository. Download the recombination map files beforehand
 ```
 wget https://zenodo.org/records/11437540/files/hg38_maps.tar.gz # hg38 build
 wget https://zenodo.org/records/11437540/files/hg19_maps.tar.gz # hg19 build
 ```
 
-Run `R --vanilla > interpolate.R` command to interpolate the genetic distances between the variants from VCF files to tab-separated text files. The first column of the output file is chromosome name, second column is the position of the variant in bp and the third column is the recombination rate in cM which looks like this:
+Run `R --vanilla > interpolate_recomb.R` command to interpolate the genetic distances between the variants from VCF files to tab-separated text files. The first column of the output file is chromosome name, second column is the position of the variant in bp and the third column is the recombination rate in cM which looks like this:
 ```
 chr1	817186	0.00923521100938176
 chr1	817341	0.00956903976555111
