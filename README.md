@@ -80,7 +80,7 @@ chr1	54669	0.0017739673267566
 chr1	54708	0.0017752328469919
 ```
 This will produce `.tab.gz` files for each chromosome which will be used as input in **LDetect**. 
-In the final step run the `block_partition.sh` file to execute LDetect. This step is complicated as it needs five substeps to complete by executing five Python-written files. See [LDetect page](https://bitbucket.org/nygcresearch/ldetect/src/master/) for more information. As you install the LDetect package, it automatically downloads these python files. LDetect expects directories to be arranged in a specific manner, so we have incorporated the layout in the `block_partition.sh` script. Overall, the output of each substep will be dumped into specific sub-directories as LDetect requires. The final output i.e. LD locks for each chromosome will be written in `bed` files in the respective `chr<n>` directories. The **BED** files will look this: 
+In the final step run the `block_partition.sh` file to execute LDetect. This step is complicated as it needs five substeps to complete by executing five Python-written files. See [LDetect page](https://bitbucket.org/nygcresearch/ldetect/src/master/) for more information. As you install the LDetect package, it automatically downloads these python files. LDetect expects directories to be arranged in a specific manner, so we have incorporated the layout in the `block_partition.sh` script. Overall, the output of each substep will be dumped into specific sub-directories as LDetect requires. The final output i.e. LD blocks for each chromosome will be written in `bed` files in the respective `chr<n>/` directories. The **BED** files will look this: 
 ```
 CHROM	start		end
 chr22	17057138	18479447
@@ -89,7 +89,17 @@ chr22	22175985	23282877
 chr22	23283219	25079925
 chr22	25081241	26789849
 ```
+The 'start' column is the start bp of a block and 'end' column is the corresponding end bp.
+**Note:** We recommend to run the `bash block_partition.sh` command in a new screen.
+```
+screen -S partblocks
+bash block_partition.sh
+```
 
+### LD calculation:
+When the block partitioning is done, the final phase is to calculate LD matrices for each block. Upon running the `bash calc_LD.sh` command, first it will inspect the LD block ranges for each chromosome, then will take the genotype data from the same directory, calculate the LD matrix for each block and finally deposit the matrices in the `ld_ref/` directory. When complete, `ld_ref` directory will have 22 sub-directories for 22 autosomes each containing further `block<m>` sub-directories. The output matrix, named like **chr<n>_blk<m>.ld** will be in each corresponding `block<m>` directory. 
+
+Finally, we provided a Python script to transform the LD matrices for each chromosome into an HDF5 hierarchical data structure and zip all 22 HDF files into a single **LD Reference Panel**.   
 
 
 
