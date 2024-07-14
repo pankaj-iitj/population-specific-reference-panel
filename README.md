@@ -27,11 +27,28 @@ The tools included in this pipeline are listed sequentially. Make sure these too
 ## Set the working directory
 We assume per sample paired-end reads i.e. `*R1.fastq` and `*R2.fastq` are in the `reads/` directory. The required human genome reference (GRCh37/38) in FASTA and dnSNP [build 156](https://ftp.ncbi.nih.gov/snp/archive/b156/VCF/) known sites in VCF should be placed in the `reference/` directory. We provided the `download_ref.sh` file for manual download in case the user has a choice of using their preferred reference version. Please make directories for intermediate steps by the following command: 
 ```
-mkdir sam bam sorted_bam dupl_bam bqsr_bam gvcf vcf geno_qc ld_blk ld_ref
+mkdir quality trimmed_reads sam bam sorted_bam dupl_bam bqsr_bam gvcf vcf geno_qc ld_blk ld_ref
 ```
 The `joint_call.sh` script also creates the directories, so if you decide simply to run the joint calling script, you can skip the above command. 
 
 ## Prepare input data
+The only initial step needed is to index the reference genome by `bwa index` and `samtools faidx` as they are needed while running these commands during read mapping and alignment sorting. For joint calling, an additional step of creating a sequence dictionary is needed using `GATK CreateSequenceDictionary`. 
+```
+genome_dir="reference"
+genome='reference/<ref>.fa    # point towards reference fasta file
+bwa index $genome
+samtools faidx $genome
+gatk4 CreateSequenceDictionary R=$genome O=$genome_dir/<ref>.dict
+```
+## Run the scripts
+### Quality check before joint calling:
+Run the `quality.sh` script to perform the steps one by one: quality check by Fastqc, multi-sample aggregated quality report by MultiQC and read trimming by fastp. If read qualities are okay, then no need for trimming and in that case, comment out the fastp command line:
+```
+cat samples.txt | parallel --progress --eta -j 10 "fastp -i reads/{}_R1.fastq.gz -I reads/{}_R2.fastq.gz -o trimmed_reads/{}_R1.trim.fastq.gz -O trimmed_reads/{}_R2.trim.fastq.gz"
+```
+The quality reports will be dumped in the `quality` directory. 
+
+### joint calling:
 
 
 
