@@ -27,7 +27,7 @@ The tools included in this pipeline are listed sequentially. Make sure these too
 ## Set the working directory
 We assume per sample paired-end reads i.e. `*R1.fastq` and `*R2.fastq` are in the `reads/` directory. The required human genome reference (GRCh37/38) in FASTA and dnSNP [build 156](https://ftp.ncbi.nih.gov/snp/archive/b156/VCF/) known sites in VCF should be placed in the `reference/` directory. We provided the `download_ref.sh` file for manual download in case the user has a choice of using their preferred reference version. Please make directories for intermediate steps by the following command: 
 ```
-mkdir quality trimmed_reads sam bam sorted_bam dupl_bam bqsr_bam gvcf vcf geno_qc ld_blk ld_ref
+mkdir quality trimmed_reads sam bam sorted_bam dupl_bam bqsr_bam gvcf vcf plink_binary geno_qc ld_blk ld_ref
 ```
 The `joint_call.sh` script also creates the directories, so if you decide simply to run the joint calling script, you can skip the above command. 
 
@@ -56,11 +56,11 @@ After all the trimmed reads are deposited in the `trimmed_reads` directory, run 
 The joint calling will yield multi-sample VCF files in `vcf/` directory split over chromosomes. During the `GenotypeGVCFs` execution, we only included 22 autosomes while sex-chromosomes and mDNA were excluded. ***This step is computationally intensive and may take several days depending on file sizes and number of samples***. 
 
 ### LD-block partitioning: 
-The first step here is to convert the genotyped VCF files into PLINK binary (bed,bim,fam) files. The pipeline expects PLINK files to be sub-directories specified by each chromosome inside the `ld_blk/` directory. To do this run the command below
+The first step here is to convert the genotyped VCF files into PLINK binary (bed,bim,fam) files. The pipeline expects PLINK files to be in the sub-directories specified by each chromosome inside the `plink_binary/` directory. To do this run the command below
 ```
 for n in {1..22}; do 
-  mkdir -p ld_blk/chr$n 
-  plink2 --vcf vcf/chr$n.vcf --double-id --export ped --make-bed --out ld_blk/chr$n/chr$n 
+  mkdir -p plink_binary/chr$n 
+  plink2 --vcf vcf/chr$n.vcf --double-id --export ped --make-bed --out plink_binary/chr$n/chr$n 
 done
 ```
 ***Caution:*** It is quite common that during file conversion to plink binaries, allele swap happens. PLINK2 treats **minor allele as A1 and major allele as A2**. The current release of PLINK2 does not affect on `--keep-allele-order` flag as it handles A1/A2 alleles separately from **'reference allele'**. If you are still using PLINK1.9, use ``plink --keep-allele-order`` option to prevent allele swap. To check whether there had been allele swap or strand flipping we recommend using the commands beforehand:
