@@ -48,7 +48,9 @@ cat samples.txt | parallel --progress --eta -j 10 "fastp -i reads/{}_R1.fastq.gz
 ```
 The quality reports will be dumped in the `quality` directory. 
 
-### joint calling:
+### Joint calling:
+After all the trimmed reads are deposited in the `trimmed_reads` directory, run `bash joint_calling.sh` command to execute joint calling step over multiple samples. The script takes trimmed reads from each sample and then aligns them with the reference genome, marks duplicate reads, and recalibrates base calls and calls variants per sample before finally perform joint calling over all samples. 
+**Note:** We parallelized this process with the GNU `parallel` command taking 10 concurrent jobs and adjusted the number of threads as per our in-house server. Users are advised to calculate these parameters according to memory allocation their system permits.   
 
 
 
