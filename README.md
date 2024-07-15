@@ -27,7 +27,7 @@ The tools included in this pipeline are listed sequentially. Make sure these too
 ## Set the working directory
 We assume per sample paired-end reads i.e. `*R1.fastq` and `*R2.fastq` are in the `reads/` directory. The required human genome reference (GRCh37/38) in FASTA and dnSNP [build 156](https://ftp.ncbi.nih.gov/snp/archive/b156/VCF/) known sites in VCF should be placed in the `reference/` directory. We provided the `download_ref.sh` file for manual download in case the user has a choice of using their preferred reference version. Please make directories for intermediate steps by the following command: 
 ```
-mkdir reference quality trimmed_reads sam bam sorted_bam dupl_bam bqsr_bam gvcf vcf plink_binary geno_qc ld_blk ld_ref
+mkdir reference reads quality trimmed_reads sam bam sorted_bam dupl_bam bqsr_bam gvcf vcf plink_binary geno_qc ld_blk ld_ref
 ```
 The `joint_call.sh` script also creates the directories, so if you decide simply to run the joint calling script, you can skip the above command. 
 
