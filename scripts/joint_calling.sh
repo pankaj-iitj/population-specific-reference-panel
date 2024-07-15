@@ -1,24 +1,15 @@
 #!/bin/bash
 
-############################################################################## < Create Directory > #######################################################################################################
-
-# mkdir /storage/soham/nextflow/
-cd nextflow
-
-# <NOTE> Only necessary when current directory is '/home/sohambiswas/' or '~/'
-
-
-####################################################################### < Initialize genome env. var. > ###################################################################################################
-
+# Initialize reference directories
 genome_dir="reference/"
 genome="reference/hg38.fa"
-head -n 10 $genome
+# head -n 10 $genome
 
 known_sites_dir="reference/"
 known_sites="reference/dbsnp151-00-All.vcf.gz"
-zcat $known_sites | head
+# zcat $known_sites | head
 
-reads="reads3"         
+reads="reads"         
 
 # bwa index $genome                                          [                                ]
 # (or),                                                      [   Indexing Reference Genome    ]  
@@ -31,7 +22,7 @@ reads="reads3"
 ############################################################################### < Main Workflow > #########################################################################################################
 
 
-mkdir sam bam sorted_bam dupl_bam bqsr_bam gvcf vcf
+# mkdir sam bam sorted_bam dupl_bam bqsr_bam gvcf vcf
 
 for fq1 in $reads/*_R1_001.fastq;
 do
