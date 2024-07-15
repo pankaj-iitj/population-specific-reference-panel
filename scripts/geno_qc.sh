@@ -18,7 +18,7 @@ done
 for n in {1..22}; do
   awk 'NR>1 && $6>0.1 || $6<-0.1 {print $1,$2}' geno_qc/chr$n/chr${n}.clean1.het > geno_qc/chr$n/chr${n}_high_het.sample 
   plink2 --bfile geno_qc/chr$n/chr${n}.clean1 --remove geno_qc/chr$n/chr${n}_high_het.sample --make-bed --out geno_qc/chr$n/chr${n}.clean2
-  rm geno_qc/chr$n/chr${n}.clean1.{bed,bim,fam,log}
+  
   rm geno_qc/chr$n/chr${n}.clean1.het geno_qc/chr$n/chr${n}.clean2.log
   mv geno_qc/chr$n/chr${n}.clean2.bim geno_qc/chr$n/chr${n}.bim
   mv geno_qc/chr$n/chr${n}.clean2.bed geno_qc/chr$n/chr${n}.bed
