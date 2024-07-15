@@ -113,7 +113,7 @@ bash block_partition.sh
 ### LD calculation:
 When the block partitioning is done, the final phase is to calculate LD matrices for each block. Upon running the `bash calc_LD.sh` command, first it will inspect the LD block ranges for each chromosome, then will take the genotype data from the same directory, calculate the LD matrix for each block and finally deposit the matrices in the `ld_ref/` directory. When complete, `ld_ref` directory will have 22 sub-directories for 22 autosomes each containing further `block/` sub-directories. The output matrix, named like **block<n>.ld** will be in each corresponding to each block. 
 
-Finally, we provided a Python script to transform the LD matrices for each chromosome into an HDF5 hierarchical data structure and zip all 22 HDF files into a single **LD Reference Panel**.   
+Finally, we provided a Python script `CreateHDF5Panel.py` to transform the LD matrices for each chromosome into an HDF5 hierarchical data structure and zip all 22 HDF files into a single **LD Reference Panel**. Place the script at `ld_ref/` directory.  
 
 
 
