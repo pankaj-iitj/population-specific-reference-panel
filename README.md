@@ -111,10 +111,52 @@ bash block_partition.sh
 ```
 
 ### LD calculation:
-When the block partitioning is done, the final phase is to calculate LD matrices for each block. Upon running the `bash calc_LD.sh` command, first it will inspect the LD block ranges for each chromosome, then will take the genotype data from the same directory, calculate the LD matrix for each block and finally deposit the matrices in the `ld_ref/` directory. When complete, `ld_ref` directory will have 22 sub-directories for 22 autosomes each containing further `block/` sub-directories. The output matrix, named like **block<n>.ld** will be in each corresponding to each block. 
+When the block partitioning is done, the final phase calculates LD matrices for each block. Upon running the `bash calc_LD.sh` command will first inspect the LD block ranges for each chromosome, then take the genotype data from the same directory, calculate the LD matrix for each block and finally deposit the matrices in the `ld_ref/` directory. When complete, `ld_ref` directory will have 22 sub-directories for 22 autosomes each containing further `block/` sub-directories. The output matrix, named like **block<n>.ld** will be in each corresponding to each block. 
 
 Finally, we provided a Python script `CreateHDF5Panel.py` to transform the LD matrices for each chromosome into an HDF5 hierarchical data structure and zip all 22 HDF files into a single **LD Reference Panel**. Place the script at `ld_ref/` directory.  
 
+## Technical addendum
+1. LDetect uses several python-written scripts step-by-step and requires a virtual environment setup. Please see the `install.sh` script where code is given to create a virtual environment by `pip`.
+2. We made a few changes in the LDetect Python scripts. The `P00_00_partition_chromosome.py` file by default fragments chromosomes in blocks with 5000 SNPs (N). For our data, we reduced it to 500. If user has genotype data with high coverage, it is recommended first to calculate the average number of SNPs per chromosome and set `N` that balances the number of blocks and SNPs per block.
+```
+infile = gzip.open(sys.argv[1])
+nind = float(sys.argv[2])
+outfile = open(sys.argv[3], "w")
+N = 500
+```  
+3. Line 126-132 in `P00_01_calc_covariance.py` script inspect individual genotypes from input VCF files.
+```
+for ind in inds:
+                index = ind2index[ind]
+                tmpg = line[index]
+                tmpg = tmpg.split(":")[0]
+                g = tmpg.split("/")
+                h.append(g[0])
+                h.append(g[1])
+```
+We changed the `g` variable in Line 130 from the default "|" to "/" as our VCF genotype was unphased. If you have phased genotype data, please change it to "|". 
+4. There seems to be a bug present in the `P03_extract_bpoints.py` file. To avoid possible error, please comment out lines 103-104
+```
+
+metric_out_uniform_local_search = apply_metric(chr_name, begin, end, config, breakpoint_loci_uniform_local_search['loci'])
+flat.print_log_msg('Global metric:')
+print_metric(metric_out_uniform_local_search)
+```
+and also from line 67-78
+```
+
+# METRIC FOR UNIFORM BREAKPOINTS
+flat.print_log_msg('* Calculating metric for uniform breakpoints...')
+# step = int((end-begin)/(len(breakpoint_loci)+1))
+# breakpoint_loci_uniform = [l for l in range(begin+step, end-step+1, step)] 
+step = int(len(init_array_x)/(len(breakpoint_loci)+1))
+breakpoint_loci_uniform = [init_array_x[i] for i in range(step, len(init_array_x)-step+1, step)]
+
+# metric_out_uniform = apply_metric(chr_name, begin, end, cnst.const[dataset], breakpoint_loci_uniform)
+metric_out_uniform = apply_metric(chr_name, begin, end, config, breakpoint_loci_uniform)
+flat.print_log_msg('Global metric:')
+print_metric(metric_out_uniform)
+```
 
 
 
