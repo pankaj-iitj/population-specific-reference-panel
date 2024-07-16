@@ -118,7 +118,7 @@ When the block partitioning is done, the final phase calculates LD matrices for 
 
 Finally, we provided a Python script `CreateHDF5Panel.py` to transform the LD matrices for each chromosome into an HDF5 hierarchical data structure and zip all 22 HDF files into a single **LD Reference Panel**. Place the script at `ld_ref/` directory.  
 
-## Technical addendum
+## Technical additions
 1. LDetect uses several python-written scripts step-by-step and requires a virtual environment setup. Please see the `install.sh` script where code is given to create a virtual environment by `pip`.
 2. We made a few changes in the LDetect Python scripts. The `P00_00_partition_chromosome.py` file by default fragments chromosomes in blocks with 5000 SNPs (N). For our data, we reduced it to 500. If user has genotype data with high coverage, it is recommended first to calculate the average number of SNPs per chromosome and set `N` that balances the number of blocks and SNPs per block.
 ```
