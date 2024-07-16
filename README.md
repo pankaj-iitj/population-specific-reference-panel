@@ -9,7 +9,7 @@ Broadly, the pipeline is divided into three main phases:
 
 Below, we explain how to start with the required tools, set the working directory, prepare input files and run the scripts.
 ## Required tools
-The tools included in this pipeline are listed sequentially. Make sure these tools are pre-installed. If not, please run the `install_tools.sh` file to install them beforehand. We assume the user has a UNIX environment.
+The tools included in this pipeline are listed sequentially. Make sure these tools are pre-installed. If not, please run the `install.sh` file to install them beforehand. We assume the user has a UNIX environment. We tested the pipeline in Ubuntu 22.04 AMD64 (x86_64) architecture If using CentOS, `module load anaconda` might be necessary after installation.
 
 | Tools | Description |
 | --- | --- |
