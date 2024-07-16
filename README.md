@@ -42,11 +42,14 @@ gatk4 CreateSequenceDictionary R=$genome O=$genome_dir/<ref>.dict
 ```
 ## Run the scripts
 ### Quality check before joint calling:
-Run the `quality.sh` script to perform the steps one by one: quality check by Fastqc, multi-sample aggregated quality report by MultiQC and read trimming by fastp. If read qualities are okay, then no need for trimming and in that case, comment out the fastp command line:
+Run the quality check to perform the steps one by one: quality check by Fastqc, multi-sample aggregated quality report by MultiQC and read trimming by fastp. If read qualities are okay, then no need for trimming and in that case, comment out the fastp command line. Follow the below code block and execute each command.
 ```
+find ./reads -name "*.fastq.gz" > ./reads/fastq_files.txt
+cat ./reads/fastq_files.txt | parallel -j 2 "fastqc {} --outdir ./quality" # FASTQC in parallel 
+multiqc ./reads/ --interactive -n "Aggregated_QC_Summary" -o ./quality/    # MultiQC
 cat samples.txt | parallel --progress --eta -j 10 "fastp -i reads/{}_R1.fastq.gz -I reads/{}_R2.fastq.gz -o trimmed_reads/{}_R1.trim.fastq.gz -O trimmed_reads/{}_R2.trim.fastq.gz"
 ```
-The quality reports will be dumped in the `quality` directory. 
+The quality reports will be dumped in the `quality/` directory. 
 
 ### Joint calling:
 After all the trimmed reads are deposited in the `trimmed_reads` directory, run `bash joint_calling.sh` command to execute joint calling step over multiple samples. The script takes trimmed reads from each sample and then aligns them with the reference genome, marks duplicate reads, and recalibrates base calls and calls variants per sample before finally perform joint calling over all samples. These include the commands: `bwa mem`, `samtools view`, `samtools sort`, `samtools index`, `gatk4 MarkDuplicatesSpark`, `gatk4 BaseRecalibrator`, `gatk4 ApplyBQSR`, `gatk4 HaplotypeCaller`, `gatk4 GenomicsDBImport` and `gatk4 GenotypeGVCFs` one after another. 
