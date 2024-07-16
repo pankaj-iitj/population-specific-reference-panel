@@ -44,8 +44,8 @@ gatk4 CreateSequenceDictionary R=$genome O=$genome_dir/<ref>.dict
 ### Quality check before joint calling:
 Run the quality check to perform the steps one by one: quality check by Fastqc, multi-sample aggregated quality report by MultiQC and read trimming by fastp. If read qualities are okay, then no need for trimming and in that case, comment out the fastp command line. Follow the below code block and execute each command.
 ```
-find ./reads -name "*.fastq.gz" > ./reads/fastq_files.txt
-cat ./reads/fastq_files.txt | parallel -j 2 "fastqc {} --outdir ./quality" # FASTQC in parallel 
+find ./reads -name "*_R1.fastq.gz" > ./reads/samples.txt
+cat ./reads/samples.txt | parallel -j 2 "fastqc {} --outdir ./quality" # FASTQC in parallel 
 multiqc ./reads/ --interactive -n "Aggregated_QC_Summary" -o ./quality/    # MultiQC
 cat samples.txt | parallel --progress --eta -j 10 "fastp -i reads/{}_R1.fastq.gz -I reads/{}_R2.fastq.gz -o trimmed_reads/{}_R1.trim.fastq.gz -O trimmed_reads/{}_R2.trim.fastq.gz"
 ```
