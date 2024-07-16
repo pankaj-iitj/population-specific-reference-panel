@@ -135,6 +135,7 @@ for ind in inds:
                 h.append(g[1])
 ```
 We changed the `g` variable in Line 130 from the default "|" to "/" as our VCF genotype was unphased. If you have phased genotype data, please change it to "|". 
+
 4. There seems to be a bug present in the `P03_extract_bpoints.py` file. To avoid possible error, please comment out lines 103-104
 ```
 
