@@ -1,3 +1,5 @@
+#!/bin/bash
+
 ## bash script for quality control of plink binary genotype data
 ## input expects to be in plink_binary/ 
 ## output clean binaries to be in geno_qc/ directory. Binaries will be segregated per chromosome
