@@ -13,8 +13,10 @@ conda install bcftools samtools bwe gatk4 fastqc multiqc fastp
 virtualenv ldetect
 source ldetect/bin/activate
 pip install ldetect
+deactivate
 
 # snpflip
 virtualenv snpflip
 source snpflip/bin/activate
 pip install snpflip
+deactivate
