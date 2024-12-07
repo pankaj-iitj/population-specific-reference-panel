@@ -67,8 +67,8 @@ echo "partition done"
 echo "Computing covariance matrices"
 
 # Step 2: compute covariance matrix
-awk '{print "tabix -h VCF/chr22.vcf.gz 2:" $1 "-" $2 " | python3 P00_01_calc_covariance.py example_data/genetic_map/chr22.tab.gz example_data/sample.txt 11418 1e-7 example_data/cov_matrix/chr22/chr22." $1 "." $2 ".gz"}' chr22_partitions > commands.txt
-parallel --progress -j 4 < commands.txt
+awk '{print "tabix -h VCF/chr22.vcf.gz 22:" $1 "-" $2 " | python3 P00_01_calc_covariance.py example_data/genetic_map/chr22.tab.gz example_data/sample.txt 11418 1e-7 example_data/cov_matrix/chr22/chr22." $1 "." $2 ".gz"}' chr22_partitions > commands.txt
+parallel --progress -j 18 < commands.txt
 rm commands.txt
 echo "Covariance matrix calculated ! Proceeding to step next step"
 
