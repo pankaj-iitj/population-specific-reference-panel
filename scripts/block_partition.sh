@@ -44,8 +44,8 @@ echo "Input files prepared !"
 ##########################################################################################################################################################################################################
 # prepare genotyped sample panel from 1000 Genomes Project Phase 3 call-set
 echo "Preparing sample set .... "
-# bcftools query -l VCF/chr1.vcf.gz > example_data/sample.txt
-# $N_SAMPLE=$(wc -l < example_data/sample.txt)
+bcftools query -l VCF/chr1.vcf.gz > example_data/sample.txt
+$N_SAMPLE=$(wc -l < example_data/sample.txt)
 echo "Sample set ready, total sample: $N_SAMPLE"
 
 #########################################################################################################################################################################################################
