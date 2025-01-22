@@ -2,6 +2,7 @@ Test block partitioning with a small sample (min. 30) size. Here, we assume you 
 
 # General instructions and file preparation
 **1.** Follow the general directory convention for smooth running
+
 **$PWD**
   * P00_00_partition_chromosome.py
   * P00_01_calc_covariance.py
