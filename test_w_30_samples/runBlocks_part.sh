@@ -19,5 +19,13 @@ for i in {1..22}.txt; do
 done
 # Step: 3 (convert covariance matrix to vector)
 for i in {1..22}; do
-    python3 P01_matrix_to_vector_pipeline.py --dataset_path=example_data/cov_matrix/ --name=chr${i} --out_fname=example_data/vector/vector.chr${i}.txt.gz
+    python3 P01_matrix_to_vector_pipeline.py \
+    --dataset_path=example_data/cov_matrix/ --name=chr${i} --out_fname=example_data/vector/vector.chr${i}.txt.gz
+done
+# Step: 4 (calculate minima)
+for i in {1..22}; do
+    pythob3 P02_minima_pipeline.py \
+    --input_fname=example_data/vector/vector.chr${i}.txt.gz --chr_name=chr${i} \
+    --dataset_path=example_data/cov_matrix/ \
+    --n_snps_bw_bpoints=7000 --out_fname=example_data/minima/minima.chr${i}.pickle
 done
