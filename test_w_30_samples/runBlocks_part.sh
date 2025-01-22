@@ -29,3 +29,9 @@ for i in {1..22}; do
     --dataset_path=example_data/cov_matrix/ \
     --n_snps_bw_bpoints=7000 --out_fname=example_data/minima/minima.chr${i}.pickle
 done
+# Step: 5 (extract breakpoints)
+for i in {1..22}; do 
+    python3 P03_extract_bpoints.py --name=chr${i} --subset=fourier_ls \
+    --dataset_path=example_data/cov_matrix/ \ 
+    --input_pickle_fname=example_data/minima/minima.chr${i}.pickle > example_data/bed/chr${i}.bed 
+done
