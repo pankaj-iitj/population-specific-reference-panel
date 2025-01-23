@@ -31,8 +31,10 @@ Test block partitioning with a small sample (min. 30) size. Here, we assume you 
   * **qc_vcf**
       * chr1.vcf.gz
       * chr1.vcf.gz.tbi
+        
         .
         .
+        
       * chr22.vcf.gz
       * chr22.vcf.gz.tbi
 
