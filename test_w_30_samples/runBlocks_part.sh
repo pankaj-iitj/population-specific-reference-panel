@@ -4,12 +4,12 @@ mkdir bed cov_matrix minima vector && cd cov_matrix
 mkdir scripts
 for i in {1..22}; do mkdir chr${i}; done && cd ../../
 # Step: 1 (partition chromosome)
-for i in {1..22}; do python3 P00_00_partition_chromosome.py example_data/chr${i}.tab.gz 30 example_data/cov_matrix/scripts/chr${i}_partitions; done
+for i in {1..22}; do python3 P00_00_partition_chromosome.py example_data/chr${i}.genetic_map.tab.gz 30 example_data/cov_matrix/scripts/chr${i}_partitions; done
 # Step: 2 (calculate covariance)
 for chr in {1..22}; do
     partition_file="example_data/cov_matrix/scripts/chr${chr}_partitions"
     if [[ -f $partition_file ]]; then
-        awk -v chr=$chr '{print "tabix -h vcfsets/chr" chr ".vcf.gz chr" chr ":" $1 "-" $2 " | python3 P00_01_calc_covariance.py example_data/deCode.chr" chr ".tab.gz example_data/SAS30gih.txt 14296 1e-7 example_data/cov_matrix/chr" chr "/chr" chr "." $1 "." $2 ".gz"}' $partition_file > commands_chr${chr}.txt
+        awk -v chr=$chr '{print "tabix -h qc_vcf/chr" chr ".vcf.gz chr" chr ":" $1 "-" $2 " | python3 P00_01_calc_covariance.py example_data/chr" chr ".genetic_map.tab.gz example_data/sample.txt 14296 1e-7 example_data/cov_matrix/chr" chr "/chr" chr "." $1 "." $2 ".gz"}' $partition_file > commands_chr${chr}.txt
     else
         echo "Partition file not found for chr${chr}: $partition_file"
     fi
