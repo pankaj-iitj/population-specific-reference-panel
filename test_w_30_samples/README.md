@@ -38,4 +38,12 @@ Test block partitioning with a small sample (min. 30) size. Here, we assume you 
       * chr22.vcf.gz
       * chr22.vcf.gz.tbi
 
-Make sure the files are correctly placed in each directory. 
+Make sure the files are correctly placed in each directory. Directories are indicated with bold text.
+
+**2.** Use `bcftools query -l *file.vcf.gz* > sample.txt` to list the sample ids. 
+
+**3.** Activate the `ldetect` virtual environment by `source $PATH_to_ldetect/bin/activate` command before start computing.
+
+**4.** You are ready to go and the final output will be `bed` files for respective chromosomes at the `bed/` directory. While using the bash script provided cross-check with file names. We left it as we used hoping the user would change them accordingly. We provided the BED file with high-LD blocks for 22 autosomes generated for the 1KG SAS population (30 samples randomly) using the genotype reference panel from [GRCh38-based 2018 biallelic SNV](https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000_genomes_project/release/20181203_biallelic_SNV/)  
+
+**5.** To make the complete LD panel refer to the main repo `README.md` for further steps
