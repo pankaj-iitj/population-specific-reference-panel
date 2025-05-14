@@ -100,11 +100,11 @@ This will produce `.tab.gz` files for each chromosome which will be used as inpu
 In the final step run the `block_partition.sh` file to execute LDetect. This step is complicated as it needs five substeps to complete by executing five Python-written files. See [LDetect page](https://bitbucket.org/nygcresearch/ldetect/src/master/) for more information. As you install the LDetect package, it automatically downloads these python files. LDetect expects directories to be arranged in a specific manner, so we have incorporated the layout in the `block_partition.sh` script. Overall, the output of each substep will be dumped into specific sub-directories as LDetect requires. The final output i.e. LD blocks for each chromosome will be written in `bed` files in the respective `chr<n>/` directories. The **BED** files will look this: 
 ```
 CHROM	start		end
-chr22	17057138	18479447
-chr22	18486017	22150982
-chr22	22175985	23282877
-chr22	23283219	25079925
-chr22	25081241	26789849
+chr1	16103	1170099
+chr1	1170099	2047216
+chr1	2047216	3356191
+chr1	3356191	4941428
+chr1	4941428	5842254
 ```
 The 'start' column is the start bp of a block and 'end' column is the corresponding end bp.
 **Note:** We recommend to run the `bash block_partition.sh` command in a new screen.
