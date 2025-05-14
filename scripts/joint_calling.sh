@@ -44,13 +44,23 @@ do
     samtools view -@ 20 -S -b $sam > $bam
     samtools sort -@ 20 -o $sorted_bam $bam
     samtools index $sorted_bam
-    gatk MarkDuplicatesSpark -I $sorted_bam -O $dupl_bam -M dupl_bam/${base}_Mark_dupl_Metrics.txt --conf'spark.executor.cores=16'
+    gatk MarkDuplicatesSpark -I $sorted_bam -O $dupl_bam -M dupl_bam/${base}_Mark_dupl_Metrics.txt --conf 'spark.executor.cores=16'
     gatk BaseRecalibrator -I $dupl_bam -R $genome --known-sites $known_sites -O dupl_bam/${base}_recall_data.table
     gatk ApplyBQSR -I $dupl_bam -R $genome --bqsr-recal-file dupl_bam/${base}_recall_data.table -O $bqsr_bam
     gatk --java-options "-Xmx4g" HaplotypeCaller -R $genome -I $bqsr_bam -O $gvcf -ERC GVCF --dbsnp $known_sites
-    
-    for ${base} in $gvcf
-    gatk GenomicsDBImport --java-option "Xmx2G Xms2G" -R $genome -V ${base}_variants.g.vcf --intervals chr{1..22,X,Y,M} \
-    --genomicdb-workspace-path "vcf/gendb/" 
 done    
-gatk GenotypeGVCFs --java-option "Xmx2G Xms2G" -R $genome --gendb "gendb/chr1" --o chr1.vcf
+# List of chromosomes (adjust if needed)
+chromosomes=(chr1 chr2 chr3 chr4 chr5 chr6 chr7 chr8 chr9 chr10 \
+             chr11 chr12 chr13 chr14 chr15 chr16 chr17 chr18 chr19 chr20 \
+             chr21 chr22 chrX chrY chrM)
+
+# Loop over chromosomes
+for chr in "${chromosomes[@]}"; do
+    echo "Processing $chr"
+    
+    # GenomicsDBImport
+    gatk GenomicsDBImport --java-option "Xmx2G Xms2G" -R $genome --genomicsdb-workspace-path "vcf/gendb/${chr}"  -L "$chr"  $(for gvcf in gvcf/*.g.vcf; do echo -n "-V $gvcf "; done) --batch-size 50 --reader-threads 5
+
+    # GenotypeGVCFs
+    gatk GenotypeGVCFs --java-option "Xmx2G Xms2G" -R "$genome" --gendb gendb/${chr} -O "vcf/${chr}_final.vcf"
+done
