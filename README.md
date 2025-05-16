@@ -38,7 +38,7 @@ The `joint_calling.sh` script also creates the directories, so if you decide sim
 Link: https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/.
 
 South Asian LD reference panel: Publicly available LD reference panel for South Asian population derived from 1000 Genomes Project phase 3 genotype data.
-Link: https://github.com/getian107/PRScs
+Link: https://github.com/getian107/PRScs.
 
 Recombination Map: A high-resolution recombination map file already computed from the 1000G SAS.
 Link: https://github.com/popgenmethods/pyrho.
