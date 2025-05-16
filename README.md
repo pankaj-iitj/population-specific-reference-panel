@@ -11,16 +11,6 @@ Below, we explain how to start with the required tools, set the working director
 ## Required tools
 The tools included in this pipeline are listed sequentially. Make sure these tools are pre-installed. If not, please run the `install.sh` file to install them beforehand. We assume the user has a UNIX environment. We tested the pipeline in Ubuntu 22.04 AMD64 (x86_64) architecture If using CentOS, `module load anaconda` might be necessary after installation.
 
-**Dataset**
-1000 Genomes Project Phase 3: Publicly available phased genotype data subsetted into chromosomes.
-Link: https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/.
-
-South Asian LD reference panel: Publicly available LD reference panel for South Asian population derived from 1000 Genomes Project phase 3 genotype data.
-Link: https://github.com/getian107/PRScs
-
-Recombination Map: A high-resolution recombination map file already computed from the 1000G SAS.
-Link: https://github.com/popgenmethods/pyrho
-
 | Tools | Description |
 | --- | --- |
 | [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) | Quality control of paired-end `fastq' files |
@@ -42,6 +32,17 @@ mkdir reference reads quality trimmed_reads sam bam sorted_bam dupl_bam bqsr_bam
 The `joint_calling.sh` script also creates the directories, so if you decide simply to run the joint calling script, you can skip the above command. 
 
 ## Prepare input data
+**Dataset**:
+
+1000 Genomes Project Phase 3: Publicly available phased genotype data subsetted into chromosomes.
+Link: https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/.
+
+South Asian LD reference panel: Publicly available LD reference panel for South Asian population derived from 1000 Genomes Project phase 3 genotype data.
+Link: https://github.com/getian107/PRScs
+
+Recombination Map: A high-resolution recombination map file already computed from the 1000G SAS.
+Link: https://github.com/popgenmethods/pyrho.
+
 The only initial step needed is to index the reference genome by `bwa index` and `samtools faidx` as they are needed while running these commands during read mapping and alignment sorting. For joint calling, an additional step of creating a sequence dictionary is needed using `GATK CreateSequenceDictionary`. 
 ```
 genome_dir="reference"
